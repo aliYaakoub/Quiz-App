@@ -1,0 +1,184 @@
+
+$primary-color: rgb(17, 180, 185);
+$text-color: #252525;
+$accent-color: rgb(175, 175, 175);
+
+html{
+    font-size: 62.5%;
+}
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@mixin flex($align-items, $justify-content, $flex-direction){
+    display: flex;
+    align-items: $align-items;
+    justify-content: $justify-content;
+    flex-direction: $flex-direction;
+}
+
+body{
+    min-height: 100vh;
+    @include flex(center, center, column);
+    background: $primary-color;
+    overflow: hidden;
+}
+.transition{
+    transition: 0.5s;
+}
+.welcomeText{
+    font-size: 6rem;
+    color: $text-color;
+    text-shadow: 
+        1px 1px 0px white,
+        2px 2px 0px $primary-color,
+        3px 3px 0px $accent-color;
+    transform-origin: left;
+    animation-fill-mode: forwards;
+    animation-duration: 1.5s;
+}
+@keyframes hanging{
+    20%{
+        transform: rotate(100deg);
+    }
+    40%{
+        transform: rotate(70deg);
+    }
+    60%{
+        transform: rotate(100deg);
+    }
+    80%{
+        transform: rotate(80deg);
+    }
+    90%{
+        transform: rotate(90deg);
+    }
+    100%{
+        transform: rotate(90deg) translateX(400px);
+    }
+}
+.welcome__under{
+    @extend .welcomeText;
+    font-size: 3rem;
+    transform-origin: center;
+    transition-property: transform;
+}
+#backdrop{
+    width: 250px !important;
+    @extend #startBtn;
+    transition-property: transform;
+}
+.buttonsDiv{
+    @include flex(center, space-around, row);
+    width: 40%;
+}
+#startBtn{
+    background: $accent-color;
+    width: 150px;
+    height: 50px;
+    border-radius: 7px;
+    margin-top: 8rem;
+    outline: 0;
+    color: $text-color;
+    font-size: 2rem;
+    cursor: pointer;
+    transform-origin: center;
+    transition-property: transform;
+    &:hover{
+        background: darken($color: $accent-color, $amount: 10%);
+    }
+}
+#noBtn{
+    @extend #startBtn;
+    background: darken($accent-color, $amount: 10%);
+    transition-property: transform;
+    &:hover{
+        background: darken($color: $accent-color, $amount: 20%);
+    }
+}
+
+
+// quiz card 
+
+.quizDiv{
+    width: 40vw;
+    height: 80vh;
+    // box-shadow: 0px 0px 10px black;
+    // background: darken($color: $primary-color, $amount: 5%);
+    color: $text-color;
+    border-radius: 15px;
+    opacity: 0;
+    transform: translateX(-500px);
+    @include flex(center, center, column);
+    position: relative;
+    transition-property: transform, opacity;
+}
+#question{
+    // position: absolute;
+    // top: 0;
+    text-align: center;
+    padding: 2rem;
+    font-size: 3rem;
+    transition-property: transform;
+}
+.options{
+    list-style: none;
+    width: 60%;
+    margin: 2rem auto;
+    transition-property: transform;
+}
+.option__item{
+    background: darken($accent-color,10%);
+    cursor: pointer;
+    width: 100%;
+    min-height: 50px;
+    margin: 2rem 0;
+    padding: 1rem;
+    text-align: center;
+    font-size: 2rem;
+    border-radius: 10px;
+    @include flex(center, center, row);
+    &:hover{
+        background: $text-color;
+        color: white;
+    }
+}
+
+
+// result div
+
+.result{
+    @include flex(center, space-around, row);
+    width: 70%;
+    height: 100vh;
+    margin: 0 auto;
+}
+.result__right{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 1px solid black;
+    @include flex(center, center, column);
+}
+.result__left{
+    @include flex(center, center, column)
+}
+.result__heading{
+    font-size: 5rem;
+}
+.result__paragraph{
+    font-size: 3rem;
+    margin: 3rem;
+}
+.classification{
+    margin: 0 8rem;
+    font-size: 5rem;
+}
+.percentage{
+    font-size: 8rem;
+}
+#reset{
+    @extend #startBtn;
+}
