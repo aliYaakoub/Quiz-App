@@ -556,6 +556,7 @@ const cinemaQues = [
     }
 ];
 
+
 let questions = [];
 
 let questionAsked = 0;
@@ -573,7 +574,7 @@ const body = document.getElementById('body');
 const subjectBackdrop = document.getElementById('backdrop');
 
 noBtn.addEventListener('click', ()=>{
-    alert('why b*tch'); // change this in case of publish
+    alert('why');
 });
 
 // intialising the quiz div
@@ -591,7 +592,7 @@ function rand(length){
 
 // this function return the percentage of the questions answered right
 function percentageFunc(input){
-    return (input * 100) / questions.length;
+    return Math.floor((input * 100) / questions.length);
 }
 
 // this function evaluate the user based on the questions he got right
@@ -610,6 +611,20 @@ function evaluate(input){
     }
 }
 
+// filling the question array based on the topic choosed
+function subjectChoosing(e){
+    if(e.value === 'default'){
+        questions = [];
+    }else if(e.value === 'webDevQues'){
+        questions = [...webDevQues];
+    }else if(e.value === 'historyQues'){
+        questions = [...historyQues];
+    }else if(e.value === 'cinemaQues'){
+        questions = [...cinemaQues];
+    }
+}
+
+// we call this function when the user finishe the quiz to display the results
 function initialisingResultDiv(){
     let result = document.createElement('div');
     result.classList.add('result');
@@ -643,7 +658,6 @@ function initialisingResultDiv(){
 }
 
 async function getQuestion(){
-    // body.innerHTML = '';
     const questionNum = questions[rand(questions.length)];
 
     // when all the questions are asked we display the user's result
@@ -656,29 +670,26 @@ async function getQuestion(){
         });
         return;
     }
+    // to get a question that was not yet asked
     if(!questionNum.asked){
-        // quizDiv.appendChild(questionText)
         questionText.innerHTML = questionNum.question;
         const answer = questionNum.answer;
         
-        // quizDiv.appendChild(optionsList);
         optionsList.innerHTML = '';
         questionNum.options.forEach(option =>{
             optionsList.innerHTML += `<li class="option__item transition" data-number="${option.number}">${option.value}</li>`;
         })
         optionsList.querySelectorAll('.option__item').forEach( option =>{
             option.addEventListener('click',()=>{
+                // get to the next question
                 if(option.getAttribute('data-number') == answer){
-                    // get to the next question
                     answeredRight++;
                     questionAsked++;
-                    console.log('right');
                     getQuestion();
                 }
                 else{
                     questionAsked++;
-                    console.log('false');
-                    getQuestion()
+                    getQuestion();
                 }
             })
         });
@@ -694,27 +705,15 @@ async function getQuestion(){
     }
 }
 
-// filling the question array based on the topic choosed
-function subjectChoosing(e){
-    if(e.value === 'webDevQues'){
-        questions = [...webDevQues];
-    }else if(e.value === 'historyQues'){
-        questions = [...historyQues];
-    }else if(e.value === 'cinemaQues'){
-        questions = [...cinemaQues];
-    }
-}
-
 startBtn.addEventListener('click',async ()=>{
 
     if(questions.length === 0){
         alert('please choose a topic');
         return
     }
-    // noBtn.style.transform = 'rotate(15deg)';
-    noBtn.style.transform = 'translateY(300px)';
-    await sleep(100);
     startBtn.style.transform = 'translateY(300px)';
+    await sleep(100);
+    noBtn.style.transform = 'translateY(300px)';
     await sleep(100);
     document.getElementById('backdrop').style.transform = 'translateY(500px)';
     await sleep(200);
